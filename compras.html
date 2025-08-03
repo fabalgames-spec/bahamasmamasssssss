@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de Compras de Armas</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+      gap: 30px;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+    .container {
+      background: #ffffff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+    .table-container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      max-height: 500px;
+      overflow-y: auto;
+      width: 100%;
+      max-width: 1000px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      color: #555;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #resultado {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      font-size: 18px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: 700;
+    }
+    tfoot td {
+      font-weight: bold;
+      background-color: #eee;
+    }
+    @media (max-width: 720px) {
+      body {
+        flex-direction: column;
+        align-items: center;
+      }
+      .container, .table-container {
+        width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; align-items: flex-start; width: 100%;">
+    <!-- Calculadora à esquerda -->
+    <div class="container">
+      <h2>Calculadora de Compras</h2>
+      <label for="comprador">Nome do Comprador:</label>
+      <input type="text" id="comprador" placeholder="Ex: João Silva" />
+      <select id="Parceria" onchange="atualizarValoresUnitarios()">
+        <option value="sem">Sem parceria</option>
+        <option value="com">Com parceria</option>
+      </select>
+      <label for="Classe_0">Classe 0 (unidades):</label>
+      <input type="number" id="Classe_0" min="0" placeholder="Ex: 5" />
+      <label for="Classe_1">Classe 1 (unidades):</label>
+      <input type="number" id="Classe_1" min="0" placeholder="Ex: 5" />
+      <label for="Classe_2">Classe 2 (unidades):</label>
+      <input type="number" id="Classe_2" min="0" placeholder="Ex: 5" />
+      <label for="Classe_3">Classe 3 (unidades):</label>
+      <input type="number" id="Classe_3" min="0" placeholder="Ex: 5" />
+      <label for="Municao_Pistola">Munição de Pistola (unidades):</label>
+      <input type="number" id="Municao_Pistola" min="0" placeholder="Ex: 5" />
+      <label for="Municao_SMG">Munição de SMG (unidades):</label>
+      <input type="number" id="Municao_SMG" min="0" placeholder="Ex: 5" />
+      <label for="Municao_Fuzil">Munição de Fuzil (unidades):</label>
+      <input type="number" id="Municao_Fuzil" min="0" placeholder="Ex: 5" />
+      <label for="Nitro">Nitro (unidades):</label>
+      <input type="number" id="Nitro" min="0" placeholder="Ex: 5" />
+      <label for="Ticket_Corrida">Ticket de Corrida (unidades):</label>
+      <input type="number" id="Ticket_Corrida" min="0" placeholder="Ex: 5" />
+      <label for="Pe_Cabra">Pé de Cabra (unidades):</label>
+      <input type="number" id="Pe_Cabra" min="0" placeholder="Ex: 5" />
+      <label for="Rastreador">Rastreador (unidades):</label>
+      <input type="number" id="Rastreador" min="0" placeholder="Ex: 5" />
+      <label for="Lockpick">Lockpick (unidades):</label>
+      <input type="number" id="Lockpick" min="0" placeholder="Ex: 5" />
+      <label for="Drogas">Drogas (unidades):</label>
+      <input type="number" id="Drogas" min="0" placeholder="Ex: 5" />
+      <label for="LSD">LSD (unidades):</label>
+      <input type="number" id="LSD" min="0" placeholder="Ex: 5" />
+      <label for="Mascara_Gas">Máscara de Gás (unidades):</label>
+      <input type="number" id="Mascara_Gas" min="0" placeholder="Ex: 5" />
+      <label for="Pendrive">Pendrive (unidades):</label>
+      <input type="number" id="Pendrive" min="0" placeholder="Ex: 5" />
+      <button onclick="calcular()">Calcular</button>
+      <div id="resultado"></div>
+    </div>
+    <!-- Tabela de compras -->
+    <div class="table-container">
+      <h3>Registo de Compras</h3>
+      <label for="filtroComprador">Filtrar por Comprador:</label>
+      <input type="text" id="filtroComprador" oninput="filtrarTabela()" placeholder="Digite o nome..." />
+      <table id="tabelaRegistos">
+        <thead>
+          <tr>
+            <th>Comprador</th>
+            <th>Classe 0</th>
+            <th>Classe 1</th>
+            <th>Classe 2</th>
+            <th>Classe 3</th>
+            <th>Munição Pistola</th>
+            <th>Munição SMG</th>
+            <th>Munição Fuzil</th>
+            <th>Nitro</th>
+            <th>Ticket de Corrida</th>
+            <th>Pé de Cabra</th>
+            <th>Rastreador</th>
+            <th>Lockpick</th>
+            <th>Drogas</th>
+            <th>LSD</th>
+            <th>Máscara Gás</th>
+            <th>Pendrive</th>
+            <th>Parceria</th>
+            <th>Total (€)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="18">Total Geral</td>
+            <td id="totalGeral">€0</td>
+          </tr>
+        </tfoot>
+      </table>
+      <a href="org.html" class="botao">vendas</a>
+      <a href="grafico.html" class="botao">grafico</a>
+    </div>
+  </div>
+  <script>
+    const valoresUnitariosCompras = {
+      Classe_0: 5000,
+      Classe_1: 10000,
+      Classe_2: 15000,
+      Classe_3: 20000,
+      Municao_Pistola: 50,
+      Municao_SMG: 75,
+      Municao_Fuzil: 100,
+      Nitro: 160000,
+      Ticket_Corrida: 150000,
+      Pe_Cabra: 60000,
+      Rastreador: 200000,
+      Lockpick: 65000,
+      Drogas: 1000,
+      LSD: 800,
+      Mascara_Gas: 400,
+      Pendrive: 200,
+    };
+
+    let totalAcumulado = 0;
+
+    function calcular() {
+      atualizarValoresUnitarios();
+      const comprador = document.getElementById('comprador').value.trim();
+      if (!comprador) {
+        alert('Por favor, insira o nome do comprador.');
+        return;
+      }
+
+      const valores = {};
+      for (const campo in valoresUnitariosCompras) {
+        valores[campo] = parseInt(document.getElementById(campo).value) || 0;
+      }
+      const parceriaTexto = document.getElementById('Parceria').options[
+        document.getElementById('Parceria').selectedIndex
+      ].text;
+
+      // Calculate total
+      let custoTotal = 0;
+      for (const campo in valores) {
+        const itemCusto = valores[campo] * valoresUnitariosCompras[campo];
+        custoTotal += itemCusto;
+        console.log(`Item: ${campo}, Quantidade: ${valores[campo]}, Preço Unitário: €${valoresUnitariosCompras[campo]}, Custo: €${itemCusto.toFixed(2)}`);
+      }
+      console.log(`Custo Total: €${custoTotal.toFixed(2)}`);
+
+      // Update UI
+      document.getElementById('resultado').innerText = `Custo Total: €${custoTotal.toFixed(2)}`;
+
+      // Add to table
+      adicionarAoRegisto(comprador, valores, parceriaTexto, custoTotal);
+
+      // Send to Google Sheets
+      const url = 'https://script.google.com/macros/s/AKfycbzU0q4tIwEzYoYdTb3M9DH34ICRnOr3_oSRK5rsMUvEcSdLX6-U04I-IeFHmBm-AES-/exec';
+      const params = new URLSearchParams({
+        comprador: comprador,
+        Parceria: parceriaTexto,
+        totalCompras: custoTotal.toFixed(2),
+        action: 'add'
+      });
+
+      for (const campo in valores) {
+        params.append(campo, valores[campo]);
+      }
+
+      console.log('Enviando para Google Sheets:', params.toString());
+
+      fetch(`${url}?${params.toString()}`, { method: 'GET' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(res => {
+          console.log('Resposta do servidor:', res);
+          document.getElementById('resultado').innerText = `Custo Total: €${custoTotal.toFixed(2)} - Registado com sucesso!`;
+        })
+        .catch(err => {
+          console.error('Erro ao enviar dados para o Google Sheets:', err);
+          document.getElementById('resultado').innerText = `Erro ao enviar dados para o Google Sheets: ${err.message}`;
+        });
+    }
+
+    function adicionarAoRegisto(comprador, valores, parceriaValor, custo) {
+      const tabela = document.getElementById('tabelaRegistos').getElementsByTagName('tbody')[0];
+      const novaLinha = tabela.insertRow();
+
+      novaLinha.insertCell(0).textContent = comprador;
+      novaLinha.insertCell(1).textContent = valores.Classe_0;
+      novaLinha.insertCell(2).textContent = valores.Classe_1;
+      novaLinha.insertCell(3).textContent = valores.Classe_2;
+      novaLinha.insertCell(4).textContent = valores.Classe_3;
+      novaLinha.insertCell(5).textContent = valores.Municao_Pistola;
+      novaLinha.insertCell(6).textContent = valores.Municao_SMG;
+      novaLinha.insertCell(7).textContent = valores.Municao_Fuzil;
+      novaLinha.insertCell(8).textContent = valores.Nitro;
+      novaLinha.insertCell(9).textContent = valores.Ticket_Corrida;
+      novaLinha.insertCell(10).textContent = valores.Pe_Cabra;
+      novaLinha.insertCell(11).textContent = valores.Rastreador;
+      novaLinha.insertCell(12).textContent = valores.Lockpick;
+      novaLinha.insertCell(13).textContent = valores.Drogas;
+      novaLinha.insertCell(14).textContent = valores.LSD;
+      novaLinha.insertCell(15).textContent = valores.Mascara_Gas;
+      novaLinha.insertCell(16).textContent = valores.Pendrive;
+      novaLinha.insertCell(17).textContent = parceriaValor;
+      novaLinha.insertCell(18).textContent = `€${custo.toFixed(2)}`;
+      novaLinha.classList.add('registo');
+
+      totalAcumulado += Number(custo.toFixed(2));
+      console.log(`Total Acumulado atualizado: €${totalAcumulado.toFixed(2)}`);
+      atualizarTotalGeral();
+    }
+
+    function atualizarTotalGeral() {
+      document.getElementById('totalGeral').textContent = `€${totalAcumulado.toFixed(2)}`;
+    }
+
+    function filtrarTabela() {
+      const filtro = document.getElementById('filtroComprador').value.toLowerCase();
+      const linhas = document.querySelectorAll('#tabelaRegistos tbody tr');
+      let totalFiltrado = 0;
+
+      linhas.forEach(linha => {
+        const nome = linha.cells[0].textContent.toLowerCase();
+        if (nome.includes(filtro)) {
+          linha.style.display = '';
+          const valorTexto = linha.cells[18].textContent.replace('€', '').trim();
+          const valorNum = parseFloat(valorTexto) || 0;
+          totalFiltrado += valorNum;
+        } else {
+          linha.style.display = 'none';
+        }
+      });
+
+      document.getElementById('totalGeral').textContent = `€${totalFiltrado.toFixed(2)}`;
+      console.log(`Total Filtrado: €${totalFiltrado.toFixed(2)}`);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarDados);
+
+    function carregarDados() {
+      const url = 'https://script.google.com/macros/s/AKfycbzU0q4tIwEzYoYdTb3M9DH34ICRnOr3_oSRK5rsMUvEcSdLX6-U04I-IeFHmBm-AES-/exec?action=get';
+      fetch(url, { method: 'GET' })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(data => {
+          console.log('Dados recebidos do Google Sheets:', data);
+          if (data.compras && data.compras.length > 0) {
+            preencherTabela('tabelaRegistos', data.compras, 'totalGeral');
+          } else if (data.error) {
+            document.getElementById('resultado').innerText = `Erro: ${data.error}`;
+          } else {
+            document.getElementById('resultado').innerText = 'Nenhum dado de compras encontrado.';
+          }
+        })
+        .catch(err => {
+          console.error('Erro ao carregar dados:', err);
+          document.getElementById('resultado').innerText = `Erro ao carregar dados do Google Sheets: ${err.message}`;
+        });
+    }
+
+    function preencherTabela(idTabela, dados, idTotal) {
+      const tabela = document.getElementById(idTabela).querySelector('tbody');
+      tabela.innerHTML = '';
+      let total = 0;
+
+      dados.forEach(reg => {
+        const linha = tabela.insertRow();
+        const valores = [
+          reg.comprador || 'Sem nome',
+          reg.Classe_0 || 0,
+          reg.Classe_1 || 0,
+          reg.Classe_2 || 0,
+          reg.Classe_3 || 0,
+          reg.Municao_Pistola || 0,
+          reg.Municao_SMG || 0,
+          reg.Municao_Fuzil || 0,
+          reg.Nitro || 0,
+          reg.Ticket_Corrida || 0,
+          reg.Pe_Cabra || 0,
+          reg.Rastreador || 0,
+          reg.Lockpick || 0,
+          reg.Drogas || 0,
+          reg.LSD || 0,
+          reg.Mascara_Gas || 0,
+          reg.Pendrive || 0,
+          reg.Parceria || 'Sem parceria',
+          `€${(parseFloat(reg.total) || 0).toFixed(2)}`
+        ];
+        valores.forEach(val => {
+          const td = linha.insertCell();
+          td.textContent = val;
+        });
+
+        total += parseFloat(reg.total) || 0;
+      });
+
+      document.getElementById(idTotal).textContent = `€${total.toFixed(2)}`;
+      console.log(`Total carregado da tabela: €${total.toFixed(2)}`);
+    }
+
+    const valoresPorParceriaCompras = {
+      sem: {
+        Classe_0: 350000,
+        Classe_1: 600000,
+        Classe_2: 1100000,
+        Classe_3: 1500000,
+        Municao_Pistola: 1200,
+        Municao_SMG: 1600,
+        Municao_Fuzil: 1900,
+        Nitro: 160000,
+        Ticket_Corrida: 150000,
+        Pe_Cabra: 60000,
+        Rastreador: 200000,
+        Lockpick: 65000,
+        Drogas: 1500,
+        LSD: 1500,
+        Mascara_Gas: 190000,
+        Pendrive: 190000,
+      },
+      com: {
+        Classe_0: 150000,
+        Classe_1: 400000,
+        Classe_2: 700000,
+        Classe_3: 1500000,
+        Municao_Pistola: 900,
+        Municao_SMG: 1300,
+        Municao_Fuzil: 1900,
+        Nitro: 120000,
+        Ticket_Corrida: 100000,
+        Pe_Cabra: 50000,
+        Rastreador: 180000,
+        Lockpick: 45000,
+        Drogas: 1400,
+        LSD: 1400,
+        Mascara_Gas: 150000,
+        Pendrive: 150000,
+      },
+    };
+
+    function atualizarValoresUnitarios() {
+      const tipo = document.getElementById('Parceria').value;
+      Object.assign(valoresUnitariosCompras, valoresPorParceriaCompras[tipo]);
+      console.log(`Valores unitários atualizados para ${tipo === 'sem' ? 'Sem parceria' : 'Com parceria'}`);
+    }
+  </script>
+</body>
+</html>
